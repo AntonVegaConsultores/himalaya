@@ -1,0 +1,93 @@
+# Himalaya config for Vega Consultores email accounts.
+# Passwords are read from KeePassXC vault (pass-verde.kdbx)
+# via keepassxc-cli with YubiKey challenge-response.
+#
+# Prerequisites:
+#   1. YubiKey plugged in
+#   2. Entries "mail/vega-marketing", "mail/vega-administracion",
+#      "mail/vega-antonvazquez" in pass-verde.kdbx with Password field
+#
+# Usage:
+#   himalaya -c /path/to/this/config.toml list
+
+[accounts.vega-marketing]
+email = "marketing@vegaconsultores.es"
+display-name = "Marketing Vega Consultores"
+default = true
+
+backend.type = "imap"
+backend.host = "serv328.controldeservidor.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.login = "marketing@vegaconsultores.es"
+backend.auth.type = "password"
+backend.auth.cmd = "./keepass-unlock.sh mail/vega-marketing"
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "serv328.controldeservidor.com"
+message.send.backend.port = 587
+message.send.backend.encryption.type = "start-tls"
+message.send.backend.login = "marketing@vegaconsultores.es"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.cmd = "./keepass-unlock.sh mail/vega-marketing"
+
+[accounts.vega-marketing.folder.aliases]
+inbox = "INBOX"
+sent = "INBOX.Elementos enviados"
+drafts = "INBOX.Borrador"
+trash = "INBOX.Papelera"
+spam = "INBOX.Spam"
+
+[accounts.vega-administracion]
+email = "administracion@vegaconsultores.es"
+display-name = "Administración Vega Consultores"
+
+backend.type = "imap"
+backend.host = "serv328.controldeservidor.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.login = "administracion@vegaconsultores.es"
+backend.auth.type = "password"
+backend.auth.cmd = "./keepass-unlock.sh mail/vega-administracion"
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "serv328.controldeservidor.com"
+message.send.backend.port = 587
+message.send.backend.encryption.type = "start-tls"
+message.send.backend.login = "administracion@vegaconsultores.es"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.cmd = "./keepass-unlock.sh mail/vega-administracion"
+
+[accounts.vega-administracion.folder.aliases]
+inbox = "INBOX"
+sent = "INBOX.Elementos enviados"
+drafts = "INBOX.Borrador"
+trash = "INBOX.Papelera"
+spam = "INBOX.Spam"
+
+[accounts.vega-antonvazquez]
+email = "antonvazquez@vegaconsultores.es"
+display-name = "Antón Vázquez Vega Consultores"
+
+backend.type = "imap"
+backend.host = "serv328.controldeservidor.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.login = "antonvazquez@vegaconsultores.es"
+backend.auth.type = "password"
+backend.auth.cmd = "./keepass-unlock.sh mail/vega-antonvazquez"
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "serv328.controldeservidor.com"
+message.send.backend.port = 587
+message.send.backend.encryption.type = "start-tls"
+message.send.backend.login = "antonvazquez@vegaconsultores.es"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.cmd = "./keepass-unlock.sh mail/vega-antonvazquez"
+
+[accounts.vega-antonvazquez.folder.aliases]
+inbox = "INBOX"
+sent = "INBOX.Elementos enviados"
+drafts = "INBOX.Borrador"
+trash = "INBOX.Papelera"
+spam = "INBOX.Spam"
