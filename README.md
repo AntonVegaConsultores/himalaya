@@ -83,6 +83,12 @@ Esto es preferible a leerlos uno a uno ya que **cada invocación de himalaya req
 
 ### Enviar correos con adjuntos
 
+Himalaya tiene dos comandos de envío:
+- `template send` — recibe MML (formato legible con headers + body + tags `<#part>`), lo compila a MIME y lo envía. Para componer correos.
+- `message send` — recibe MIME crudo ya construido (formato RFC822). Para reenviar `.eml` exportados o integrar con herramientas que generan MIME.
+
+Al componer correos usar siempre `template send`.
+
 1. Crear un fichero MML en `drafts/`:
 
 ```
@@ -99,20 +105,22 @@ Cuerpo del mensaje aquí.
 2. Enviar:
 
 ```bash
-himalaya -c $CFG message send -a vega-administracion "$(cat drafts/mi-correo.mml)"
+himalaya -c $CFG template send -a vega-administracion "$(cat drafts/mi-correo.mml)"
 ```
 
 > **Importante:** usar `"$(cat archivo)"` en lugar de `< archivo` para que stdin quede libre para la autenticación interactiva de keepassxc-cli.
 
+> **Nota:** `template send` pide autenticación dos veces (IMAP para guardar copia en enviados + SMTP para enviar). Requiere himalaya >= v1.2.0 (en v1.1.0 la conexión IMAP expira entre las dos autenticaciones).
+
 ### Enviar varios correos en lote
 
-Crear un script que encadene los envíos. Cada uno requerirá autenticación:
+Crear un script que encadene los envíos. Cada uno requerirá dos autenticaciones (IMAP + SMTP):
 
 ```bash
 #!/usr/bin/env bash
 CFG=~/Vegaconsultores/himalaya/config.toml
-himalaya -c "$CFG" message send -a vega-administracion "$(cat drafts/mail-1.mml)"
-himalaya -c "$CFG" message send -a vega-administracion "$(cat drafts/mail-2.mml)"
+himalaya -c "$CFG" template send -a vega-administracion "$(cat drafts/mail-1.mml)"
+himalaya -c "$CFG" template send -a vega-administracion "$(cat drafts/mail-2.mml)"
 ```
 
 ## Estructura del repositorio
