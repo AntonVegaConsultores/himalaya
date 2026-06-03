@@ -110,7 +110,7 @@ himalaya -c $CFG template send -a vega-administracion "$(cat drafts/mi-correo.mm
 
 > **Importante:** usar `"$(cat archivo)"` en lugar de `< archivo` para que stdin quede libre para la autenticación interactiva de keepassxc-cli.
 
-> **Nota:** `template send` pide autenticación dos veces (IMAP para guardar copia en enviados + SMTP para enviar). Requiere himalaya >= v1.2.0 (en v1.1.0 la conexión IMAP expira entre las dos autenticaciones).
+> **Nota:** `template send` pide autenticación dos veces (IMAP para guardar copia en enviados + SMTP para enviar).
 
 ### Enviar varios correos en lote
 
@@ -122,6 +122,24 @@ CFG=~/Vegaconsultores/himalaya/config.toml
 himalaya -c "$CFG" template send -a vega-administracion "$(cat drafts/mail-1.mml)"
 himalaya -c "$CFG" template send -a vega-administracion "$(cat drafts/mail-2.mml)"
 ```
+
+### Responder o reenviar un correo
+
+Por defecto usar el flujo `template` (generar → editar fichero → enviar). `message reply/forward` abre `$EDITOR` interactivamente — útil si se quiere editar a mano, pero no es el flujo habitual.
+
+```bash
+# Responder (añadir -A para reply-all)
+himalaya -c $CFG template reply -a vega-administracion 27298 > drafts/reply.mml
+# Editar drafts/reply.mml, luego enviar:
+himalaya -c $CFG template send -a vega-administracion "$(cat drafts/reply.mml)"
+
+# Reenviar
+himalaya -c $CFG template forward -a vega-administracion 27298 > drafts/fwd.mml
+# Editar drafts/fwd.mml (rellenar To:, añadir texto/adjuntos), luego enviar:
+himalaya -c $CFG template send -a vega-administracion "$(cat drafts/fwd.mml)"
+```
+
+Las plantillas generadas incluyen los headers `In-Reply-To` y `References` para enhebrar correctamente.
 
 ## Estructura del repositorio
 
