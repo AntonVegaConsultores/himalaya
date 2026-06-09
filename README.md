@@ -149,27 +149,37 @@ Las plantillas generadas incluyen los headers `In-Reply-To` y `References` para 
 ├── keepass-unlock.sh            # Wrapper de autenticación con prompt visible
 ├── drafts/                      # Borradores de correos (gitignored)
 │   └── *.mml
-├── contactos-colaboradores.csv  # Directorio de contactos (gitignored)
+├── contactos-colaboradores.vcf  # Directorio de contactos, vCard 3.0 (gitignored)
 ├── .gitignore
 └── README.md
 ```
 
 ## Fichero de contactos
 
-`contactos-colaboradores.csv` no se versiona (contiene datos personales). Su estructura es:
+`contactos-colaboradores.vcf` no se versiona (contiene datos personales). Es un fichero **vCard 3.0** (RFC 2426), texto plano, con un bloque `BEGIN:VCARD … END:VCARD` por persona. Permite varios emails/teléfonos por contacto y es importable directamente a móvil / Google Contacts / Outlook.
 
-```csv
-empresa,alias,contacto,email,telefono,rol,principal
-NOMBRE EMPRESA,ALIAS CRM,Nombre Persona,email@ejemplo.com,+34 XXX XXX XXX,colaborador,si
+```vcf
+BEGIN:VCARD
+VERSION:3.0
+FN:Nombre Persona
+N:Apellidos;Nombre;;;
+ORG:NOMBRE EMPRESA
+NICKNAME:ALIAS CRM
+CATEGORIES:colaborador
+EMAIL;TYPE=work,pref:email@ejemplo.com
+EMAIL;TYPE=home:otro@ejemplo.com
+TEL;TYPE=cell,pref:+34 XXX XXX XXX
+END:VCARD
 ```
 
-- **empresa**: nombre real de la empresa
-- **alias**: nombre con el que se conoce en el CRM (puede diferir del nombre real)
-- **contacto**: nombre de la persona (vacío para emails genéricos)
-- **email**: una fila por cada dirección de email
-- **telefono**: con prefijo +34
-- **rol**: `colaborador`, `cliente`, etc.
-- **principal**: `si` para el email preferente de contacto, `no` para el resto
+- **FN / N**: nombre para mostrar y nombre estructurado (`Apellidos;Nombre;;;`).
+- **ORG**: nombre real de la empresa.
+- **NICKNAME**: alias con el que se conoce en el CRM (puede diferir del nombre real).
+- **CATEGORIES**: rol (`colaborador`, `cliente`, etc.).
+- **EMAIL / TEL**: se repiten tantas veces como haga falta. `TYPE` los clasifica (`work`, `home`, `cell`, `voice`) y `pref` marca el preferente (equivale al antiguo `principal=si`).
+- **NOTE**: notas libres (p. ej. quién usa WhatsApp).
+
+> El fichero debe usar saltos de línea **CRLF** (lo exige el RFC). Validable con `nix run nixpkgs#vcard -- contactos-colaboradores.vcf`.
 
 ## Carpetas IMAP
 
