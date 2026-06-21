@@ -6,6 +6,9 @@
 #   1. YubiKey plugged in
 #   2. Entries "mail/vega-marketing", "mail/vega-administracion",
 #      "mail/vega-antonvazquez" in pass-verde.kdbx with Password field
+#   3. keepass-unlock.sh in $HOME/Vegaconsultores/himalaya/ (adjust the
+#      auth.cmd paths below if you clone the repo elsewhere). The kdbx path
+#      lives inside keepass-unlock.sh ($PASS_VERDE_KDBX overrides it).
 #
 # Usage:
 #   himalaya -c /path/to/this/config.toml list
@@ -21,7 +24,7 @@ backend.port = 993
 backend.encryption.type = "tls"
 backend.login = "marketing@vegaconsultores.es"
 backend.auth.type = "password"
-backend.auth.cmd = "./keepass-unlock.sh mail/vega-marketing"
+backend.auth.cmd = "$HOME/Vegaconsultores/himalaya/keepass-unlock.sh mail/vega-marketing"
 
 message.send.backend.type = "smtp"
 message.send.backend.host = "serv328.controldeservidor.com"
@@ -29,7 +32,7 @@ message.send.backend.port = 587
 message.send.backend.encryption.type = "start-tls"
 message.send.backend.login = "marketing@vegaconsultores.es"
 message.send.backend.auth.type = "password"
-message.send.backend.auth.cmd = "./keepass-unlock.sh mail/vega-marketing"
+message.send.backend.auth.cmd = "$HOME/Vegaconsultores/himalaya/keepass-unlock.sh mail/vega-marketing"
 
 [accounts.vega-marketing.folder.aliases]
 inbox = "INBOX"
@@ -48,7 +51,7 @@ backend.port = 993
 backend.encryption.type = "tls"
 backend.login = "administracion@vegaconsultores.es"
 backend.auth.type = "password"
-backend.auth.cmd = "./keepass-unlock.sh mail/vega-administracion"
+backend.auth.cmd = "$HOME/Vegaconsultores/himalaya/keepass-unlock.sh mail/vega-administracion"
 
 message.send.backend.type = "smtp"
 message.send.backend.host = "serv328.controldeservidor.com"
@@ -56,7 +59,7 @@ message.send.backend.port = 587
 message.send.backend.encryption.type = "start-tls"
 message.send.backend.login = "administracion@vegaconsultores.es"
 message.send.backend.auth.type = "password"
-message.send.backend.auth.cmd = "./keepass-unlock.sh mail/vega-administracion"
+message.send.backend.auth.cmd = "$HOME/Vegaconsultores/himalaya/keepass-unlock.sh mail/vega-administracion"
 
 [accounts.vega-administracion.folder.aliases]
 inbox = "INBOX"
@@ -75,7 +78,7 @@ backend.port = 993
 backend.encryption.type = "tls"
 backend.login = "antonvazquez@vegaconsultores.es"
 backend.auth.type = "password"
-backend.auth.cmd = "./keepass-unlock.sh mail/vega-antonvazquez"
+backend.auth.cmd = "$HOME/Vegaconsultores/himalaya/keepass-unlock.sh mail/vega-antonvazquez"
 
 message.send.backend.type = "smtp"
 message.send.backend.host = "serv328.controldeservidor.com"
@@ -83,7 +86,7 @@ message.send.backend.port = 587
 message.send.backend.encryption.type = "start-tls"
 message.send.backend.login = "antonvazquez@vegaconsultores.es"
 message.send.backend.auth.type = "password"
-message.send.backend.auth.cmd = "./keepass-unlock.sh mail/vega-antonvazquez"
+message.send.backend.auth.cmd = "$HOME/Vegaconsultores/himalaya/keepass-unlock.sh mail/vega-antonvazquez"
 
 [accounts.vega-antonvazquez.folder.aliases]
 inbox = "INBOX"
