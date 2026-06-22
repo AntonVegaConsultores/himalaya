@@ -29,6 +29,24 @@ Las contraseñas se obtienen de KeePassXC vía `keepass-unlock.sh`, un wrapper q
 
 Sin este wrapper, keepassxc-cli pide la contraseña en silencio y no queda claro cuándo hay que interactuar.
 
+## Espejo local (lectura sin auth)
+
+Para no autenticar en cada lectura, `mbsync` (isync) mantiene un **espejo Maildir** del correo en `landing_zone/<cuenta>/` (gitignored), y himalaya lo lee con cuentas `*-local` (backend maildir) **sin pedir nada**.
+
+```bash
+bin/sync-mail                 # sincroniza las 3 cuentas (un toque YubiKey por cuenta)
+bin/sync-mail vega-marketing  # solo una
+```
+
+- **Leer / buscar** (incluido el cuerpo) → cuentas `-local`, cero auth:
+  ```bash
+  himalaya -c config.toml envelope list -a vega-marketing-local -s 20
+  himalaya -c config.toml envelope list -a vega-marketing-local -s 20 body "factura"
+  ```
+- **Enviar / responder / reenviar**, o **consultar correo no descargado** (más antiguo que la ventana de sync, o recién llegado) → cuentas IMAP (`-a vega-marketing`), con toque.
+- El espejo guarda por defecto los ~1000 mensajes más recientes por carpeta (`MaxMessages` en `mbsyncrc`); súbelo si necesitas más histórico en local. La sincronización **nunca borra en el servidor** (`Expunge/Remove None`).
+- Requiere el devShell (`himalaya` + `mbsync`): entra al repo con direnv, o `nix develop`.
+
 ## Uso básico
 
 Todos los comandos usan `-c` para apuntar a este config:

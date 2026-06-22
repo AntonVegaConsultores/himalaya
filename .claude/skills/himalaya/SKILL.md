@@ -7,12 +7,29 @@ description: How to manage Vega Consultores email via himalaya CLI through a kit
 
 You manage email for Vega Consultores using the himalaya CLI running in a kitty terminal. The config is at `~/Vegaconsultores/himalaya/config.toml`.
 
-## Key constraint: interactive authentication
+## Two ways to reach the mail: local mirror (no auth) vs IMAP (auth)
 
-Every himalaya invocation requires the user to type a password + touch a YubiKey. This has two major consequences:
+Each account exists **twice** in the config:
 
-1. **Minimize the number of himalaya invocations.** Always prefer commands that batch work (e.g. `message read ID1 ID2 ID3` instead of three separate reads).
-2. **Never redirect stdin** when sending emails. Use `"$(cat file)"` as argument, not `< file`, because stdin must stay free for keepassxc-cli authentication.
+- **`<account>-local`** (e.g. `vega-marketing-local`) — **maildir backend over a local mirror**. Listing, searching (incl. **body** search) and reading happen with **zero authentication**. This is the default for reading/searching. The mirror is populated by `bin/sync-mail` (one YubiKey touch per account, run periodically) and by default keeps only the most recent ~1000 messages per folder (`MaxMessages` in `mbsyncrc`).
+- **`<account>`** (e.g. `vega-marketing`) — **IMAP backend, live server**. Password + YubiKey touch per invocation. Use it for **sending/replying/forwarding** and for **mail not in the local mirror** (older than the sync window, or just arrived).
+
+Routing:
+- Read / search / browse → use `-local` (no auth). **Prefer this.**
+- Send / reply / forward → use the IMAP account (touch).
+- Need something not downloaded (old/full history, brand-new) → use the IMAP account explicitly (`-a vega-marketing`), or raise `MaxMessages` and re-sync.
+
+Sync the mirror (one touch per account):
+```bash
+bin/sync-mail                 # all accounts
+bin/sync-mail vega-marketing  # just one
+```
+
+When using the IMAP account (auth required):
+1. **Minimize invocations** — batch work (e.g. `message read ID1 ID2 ID3`).
+2. **Never redirect stdin** when sending — use `"$(cat file)"`, not `< file` (stdin must stay free for keepassxc-cli).
+
+> **IDs differ between backends:** a maildir ID from `-local` is NOT the IMAP UID. To reply/forward something found in `-local`, either generate the template from `-local` (`template reply -a vega-marketing-local <local-ID> > draft.mml`, no auth) and send via the IMAP account, or re-list via the IMAP account to get its UID.
 
 ## Terminal workflow
 
@@ -131,21 +148,25 @@ This still requires one auth per invocation, but runs them back-to-back without 
 
 ## Accounts
 
-| Name | Email | Default |
+Each has an IMAP variant (live, auth) and a `-local` maildir variant (mirror, no auth — for reading/searching):
+
+| Name (IMAP, auth) | Local (maildir, no auth) | Email | Default |
+|---|---|---|---|
+| `vega-marketing` | `vega-marketing-local` | marketing@vegaconsultores.es | yes |
+| `vega-administracion` | `vega-administracion-local` | administracion@vegaconsultores.es | no |
+| `vega-antonvazquez` | `vega-antonvazquez-local` | antonvazquez@vegaconsultores.es | no |
+
+## Folders
+
+Real folder names differ by backend, so **prefer the aliases** (`-f sent`, `-f trash`…) — they resolve correctly on either backend.
+
+| Alias | IMAP real name | `-local` (maildir) real name |
 |---|---|---|
-| `vega-marketing` | marketing@vegaconsultores.es | yes |
-| `vega-administracion` | administracion@vegaconsultores.es | no |
-| `vega-antonvazquez` | antonvazquez@vegaconsultores.es | no |
-
-## IMAP folders
-
-| Alias | Real name |
-|---|---|
-| inbox | INBOX |
-| sent | INBOX.Elementos enviados |
-| drafts | INBOX.Borrador |
-| trash | INBOX.Papelera |
-| spam | INBOX.Spam |
+| inbox | INBOX | INBOX |
+| sent | INBOX.Elementos enviados | Elementos enviados |
+| drafts | INBOX.Borrador | Borrador |
+| trash | INBOX.Papelera | Papelera |
+| spam | INBOX.Spam | Spam |
 
 ## Contacts
 

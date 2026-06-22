@@ -94,3 +94,50 @@ sent = "INBOX.Elementos enviados"
 drafts = "INBOX.Borrador"
 trash = "INBOX.Papelera"
 spam = "INBOX.Spam"
+
+# ─── Cuentas de LECTURA local (maildir, sin auth) ──────────────────────────
+# Backend maildir sobre el espejo que crea mbsync (ver mbsyncrc + bin/sync-mail).
+# Leer/buscar por estas (cero auth); enviar/responder por las cuentas IMAP de
+# arriba (toque). Sincroniza el espejo con: bin/sync-mail
+
+[accounts.vega-marketing-local]
+email = "marketing@vegaconsultores.es"
+display-name = "Marketing Vega Consultores (local)"
+backend.type = "maildir"
+backend.root-dir = "~/Vegaconsultores/himalaya/landing_zone/vega-marketing"
+backend.maildirpp = false
+
+[accounts.vega-marketing-local.folder.aliases]
+inbox = "INBOX"
+sent = "Elementos enviados"
+drafts = "Borrador"
+trash = "Papelera"
+spam = "Spam"
+
+[accounts.vega-administracion-local]
+email = "administracion@vegaconsultores.es"
+display-name = "Administración Vega Consultores (local)"
+backend.type = "maildir"
+backend.root-dir = "~/Vegaconsultores/himalaya/landing_zone/vega-administracion"
+backend.maildirpp = false
+
+[accounts.vega-administracion-local.folder.aliases]
+inbox = "INBOX"
+sent = "Elementos enviados"
+drafts = "Borrador"
+trash = "Papelera"
+spam = "Spam"
+
+[accounts.vega-antonvazquez-local]
+email = "antonvazquez@vegaconsultores.es"
+display-name = "Antón Vázquez Vega Consultores (local)"
+backend.type = "maildir"
+backend.root-dir = "~/Vegaconsultores/himalaya/landing_zone/vega-antonvazquez"
+backend.maildirpp = false
+
+[accounts.vega-antonvazquez-local.folder.aliases]
+inbox = "INBOX"
+sent = "Elementos enviados"
+drafts = "Borrador"
+trash = "Papelera"
+spam = "Spam"
