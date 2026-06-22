@@ -10,7 +10,11 @@ set -euo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 RC="$DIR/mbsyncrc"
 
-mkdir -p "$DIR/landing_zone"
+# mbsync no crea el directorio raíz de cada store Maildir: lo aseguramos aquí
+# leyendo las rutas 'Path' del mbsyncrc (expandiendo ~).
+while read -r p; do
+  [[ -n "$p" ]] && mkdir -p "${p/#\~/$HOME}"
+done < <(awk '/^Path[[:space:]]/{print $2}' "$RC")
 
 if [[ $# -eq 0 ]]; then
   exec mbsync -c "$RC" vega       # el grupo definido en mbsyncrc
