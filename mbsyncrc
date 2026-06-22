@@ -1,0 +1,92 @@
+# mbsync (isync) — espejo IMAP -> Maildir en landing_zone/ para que himalaya
+# lea sin auth (misma arquitectura que plazosKD: datos en landing_zone/, gitignored).
+#
+# Auth vía keepass-unlock.sh (misma kdbx + YubiKey): un toque por cuenta y sync.
+# Sincroniza:  bin/sync-mail            (todas las cuentas)
+#              bin/sync-mail vega-marketing   (una)
+#
+# Política SEGURA: bidireccional para crear (Create Both) y propagar flags,
+# pero NUNCA borra/expurga en ningún lado (Expunge None, Remove None). Así el
+# espejo baja el correo y sube las copias de enviados, sin riesgo de perder
+# correo del servidor. (Las eliminaciones no se sincronizan; reconciliar a mano.)
+
+# ─────────────────────────── vega-marketing ────────────────────────────────
+IMAPAccount vega-marketing
+Host serv328.controldeservidor.com
+Port 993
+User marketing@vegaconsultores.es
+PassCmd "$HOME/Vegaconsultores/himalaya/keepass-unlock.sh mail/vega-marketing"
+TLSType IMAPS
+
+IMAPStore vega-marketing-remote
+Account vega-marketing
+
+MaildirStore vega-marketing-local
+Path ~/Vegaconsultores/himalaya/landing_zone/vega-marketing/
+Inbox ~/Vegaconsultores/himalaya/landing_zone/vega-marketing/INBOX
+SubFolders Verbatim
+
+Channel vega-marketing
+Far :vega-marketing-remote:
+Near :vega-marketing-local:
+Patterns *
+Create Both
+Expunge None
+Remove None
+SyncState *
+
+# ──────────────────────────── vega-administracion ──────────────────────────
+IMAPAccount vega-administracion
+Host serv328.controldeservidor.com
+Port 993
+User administracion@vegaconsultores.es
+PassCmd "$HOME/Vegaconsultores/himalaya/keepass-unlock.sh mail/vega-administracion"
+TLSType IMAPS
+
+IMAPStore vega-administracion-remote
+Account vega-administracion
+
+MaildirStore vega-administracion-local
+Path ~/Vegaconsultores/himalaya/landing_zone/vega-administracion/
+Inbox ~/Vegaconsultores/himalaya/landing_zone/vega-administracion/INBOX
+SubFolders Verbatim
+
+Channel vega-administracion
+Far :vega-administracion-remote:
+Near :vega-administracion-local:
+Patterns *
+Create Both
+Expunge None
+Remove None
+SyncState *
+
+# ──────────────────────────── vega-antonvazquez ────────────────────────────
+IMAPAccount vega-antonvazquez
+Host serv328.controldeservidor.com
+Port 993
+User antonvazquez@vegaconsultores.es
+PassCmd "$HOME/Vegaconsultores/himalaya/keepass-unlock.sh mail/vega-antonvazquez"
+TLSType IMAPS
+
+IMAPStore vega-antonvazquez-remote
+Account vega-antonvazquez
+
+MaildirStore vega-antonvazquez-local
+Path ~/Vegaconsultores/himalaya/landing_zone/vega-antonvazquez/
+Inbox ~/Vegaconsultores/himalaya/landing_zone/vega-antonvazquez/INBOX
+SubFolders Verbatim
+
+Channel vega-antonvazquez
+Far :vega-antonvazquez-remote:
+Near :vega-antonvazquez-local:
+Patterns *
+Create Both
+Expunge None
+Remove None
+SyncState *
+
+# Atajo para sincronizar todas: definimos un grupo.
+Group vega
+Channel vega-marketing
+Channel vega-administracion
+Channel vega-antonvazquez

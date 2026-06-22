@@ -1,3 +1,5 @@
 config.toml
 drafts/
 contactos-colaboradores.vcf
+.direnv/
+landing_zone/

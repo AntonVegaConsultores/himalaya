@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Sincroniza el correo IMAP -> Maildir en landing_zone/<cuenta>, para que
+# himalaya lea/busque sin pedir auth. Un toque de YubiKey por cuenta.
+#
+# Uso:
+#   sync-mail                      # todas las cuentas (grupo 'vega')
+#   sync-mail vega-marketing       # solo una (nombre de canal)
+set -euo pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+RC="$DIR/mbsyncrc"
+
+mkdir -p "$DIR/landing_zone"
+
+if [[ $# -eq 0 ]]; then
+  exec mbsync -c "$RC" vega       # el grupo definido en mbsyncrc
+else
+  exec mbsync -c "$RC" "$@"
+fi
