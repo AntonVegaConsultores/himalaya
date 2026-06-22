@@ -16,12 +16,17 @@ Every himalaya invocation requires the user to type a password + touch a YubiKey
 
 ## Terminal workflow
 
-Himalaya runs in a separate kitty terminal (the user will tell you which one). Use the same send-text + diff pattern as SSH:
+Himalaya runs in a kitty terminal with remote control. **By default, at the start of the session, launch a fresh one entering the project dir** so its `direnv`/`devenv` activates (env + tools ready):
 
-1. **Send** a command: `kitten @ --to "unix:/tmp/kitty-PID" send-text "command\n"`
-2. **Read** the result: `kitty-ctx diff PID`
+1. **Launch (once per session):** `kitty-agent` opens a new remote-control-enabled kitty window and prints its PID. Capture that PID and use it for everything below; tell the user a new window opened. Then `cd` into the project so direnv loads:
+   ```bash
+   kitten @ --to "unix:/tmp/kitty-PID" send-text "cd ~/Vegaconsultores/himalaya\n"
+   ```
+   (If the user instead points you to an existing terminal, use that PID and skip the launch.)
+2. **Send** a command: `kitten @ --to "unix:/tmp/kitty-PID" send-text "command\n"`
+3. **Read** the result: `kitty-ctx diff PID`
 
-**Do both in the same turn.** Do not yield between send-text and diff. The user controls timing — they approve the diff call only after the command finishes and they've authenticated.
+**Do send + read (steps 2–3) in the same turn.** Do not yield between send-text and diff. The user controls timing — they approve the diff call only after the command finishes and they've authenticated.
 
 ## Common operations
 
