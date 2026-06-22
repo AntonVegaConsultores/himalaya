@@ -9,6 +9,12 @@
 # pero NUNCA borra/expurga en ningún lado (Expunge None, Remove None). Así el
 # espejo baja el correo y sube las copias de enviados, sin riesgo de perder
 # correo del servidor. (Las eliminaciones no se sincronizan; reconciliar a mano.)
+#
+# MaxMessages N: mantiene solo los N mensajes más recientes por buzón en LOCAL
+# (los más viejos se expiran del espejo; el servidor conserva todo). Ahorra
+# espacio. Súbelo/bájalo a gusto; para buscar correo más antiguo, sube N y
+# vuelve a sincronizar. (ExpireUnread por defecto = no: los no leídos no se
+# expiran aunque sobren del tope, así nunca pierdes no leídos en local.)
 
 # ─────────────────────────── vega-marketing ────────────────────────────────
 IMAPAccount vega-marketing
@@ -34,6 +40,7 @@ Create Both
 Expunge None
 Remove None
 SyncState *
+MaxMessages 1000
 
 # ──────────────────────────── vega-administracion ──────────────────────────
 IMAPAccount vega-administracion
@@ -59,6 +66,7 @@ Create Both
 Expunge None
 Remove None
 SyncState *
+MaxMessages 1000
 
 # ──────────────────────────── vega-antonvazquez ────────────────────────────
 IMAPAccount vega-antonvazquez
@@ -84,6 +92,7 @@ Create Both
 Expunge None
 Remove None
 SyncState *
+MaxMessages 1000
 
 # Atajo para sincronizar todas: definimos un grupo.
 Group vega
