@@ -47,16 +47,26 @@ Himalaya runs in a kitty terminal with remote control. **By default, at the star
 
 ## Common operations
 
-Always set the config path first.
-In the fish terminal: `set CFG ~/Vegaconsultores/himalaya/config.toml`
-In a bash script: `CFG=~/Vegaconsultores/himalaya/config.toml`
+**Config path: `HIMALAYA_CONFIG`.** himalaya reads its config path from the
+`HIMALAYA_CONFIG` env var (or an explicit `-c <path>`). In the **project shell**
+(the kitty terminal after `cd`-ing into the repo) direnv exports it from `.envrc`
+automatically, so just run `himalaya ...` with no `-c` — that's why the examples
+below omit it.
+
+Outside the project shell (notably the **Bash tool**, which does NOT load direnv)
+set it once before your commands, or pass `-c`:
+
+```bash
+export HIMALAYA_CONFIG=~/Vegaconsultores/himalaya/config.toml   # then: himalaya ...
+# or, one-off:  himalaya -c ~/Vegaconsultores/himalaya/config.toml ...
+```
 
 ### List emails
 
 ```bash
-himalaya -c $CFG envelope list -s 20
-himalaya -c $CFG envelope list -a vega-administracion -s 20
-himalaya -c $CFG envelope list -f "INBOX.Elementos enviados" -s 10
+himalaya envelope list -s 20
+himalaya envelope list -a vega-administracion -s 20
+himalaya envelope list -f "INBOX.Elementos enviados" -s 10
 ```
 
 > The `-a` flag goes AFTER the subcommand (`envelope list -a ...`), not before it.
@@ -64,21 +74,21 @@ himalaya -c $CFG envelope list -f "INBOX.Elementos enviados" -s 10
 ### Search
 
 ```bash
-himalaya -c $CFG envelope list -s 20 from user@example.com
-himalaya -c $CFG envelope list -s 20 from foo or from bar
-himalaya -c $CFG envelope list -s 20 subject "Kit Digital" and after 2026-05-01
+himalaya envelope list -s 20 from user@example.com
+himalaya envelope list -s 20 from foo or from bar
+himalaya envelope list -s 20 subject "Kit Digital" and after 2026-05-01
 ```
 
 ### Read multiple emails (single auth)
 
 ```bash
-himalaya -c $CFG message read 27298 27293 27279
+himalaya message read 27298 27293 27279
 ```
 
 ### Read emails from a specific folder
 
 ```bash
-himalaya -c $CFG message read -f "INBOX.Elementos enviados" 2905 2868
+himalaya message read -f "INBOX.Elementos enviados" 2905 2868
 ```
 
 ### Send email with attachment
@@ -101,7 +111,7 @@ Body text here.
 Send it (note: `$(cat ...)` not `< file`):
 
 ```bash
-himalaya -c $CFG template send -a vega-administracion "$(cat drafts/mail.mml)"
+himalaya template send -a vega-administracion "$(cat drafts/mail.mml)"
 ```
 
 `template send` authenticates **twice** per invocation: once for IMAP (save copy to sent) and once for SMTP (send). This is normal.
@@ -111,9 +121,9 @@ himalaya -c $CFG template send -a vega-administracion "$(cat drafts/mail.mml)"
 ```bash
 #!/usr/bin/env bash
 # Use /usr/bin/env bash, NOT /bin/bash (NixOS)
-CFG=~/Vegaconsultores/himalaya/config.toml
-himalaya -c "$CFG" template send -a vega-administracion "$(cat drafts/mail-1.mml)"
-himalaya -c "$CFG" template send -a vega-administracion "$(cat drafts/mail-2.mml)"
+export HIMALAYA_CONFIG=~/Vegaconsultores/himalaya/config.toml
+himalaya template send -a vega-administracion "$(cat drafts/mail-1.mml)"
+himalaya template send -a vega-administracion "$(cat drafts/mail-2.mml)"
 ```
 
 Each invocation requires two authentications (IMAP + SMTP).
@@ -135,7 +145,7 @@ with real data, then send:
 ```bash
 cp boilerplates/factura-kit-digital.mml drafts/kd-NOMBRE-NUMFACTURA.mml
 # edit drafts/kd-NOMBRE-NUMFACTURA.mml, fill {{NOMBRE}}, {{NUM_FACTURA}}, etc.
-himalaya -c $CFG template send -a vega-administracion "$(cat drafts/kd-NOMBRE-NUMFACTURA.mml)"
+himalaya template send -a vega-administracion "$(cat drafts/kd-NOMBRE-NUMFACTURA.mml)"
 ```
 
 See `boilerplates/README.md` for the available boilerplates and their placeholders.
@@ -146,14 +156,14 @@ By default, use the `template` workflow (generate → edit file → send). `mess
 
 ```bash
 # Reply (add -A for reply-all)
-himalaya -c $CFG template reply -a vega-administracion 27298 > drafts/reply.mml
+himalaya template reply -a vega-administracion 27298 > drafts/reply.mml
 # Edit drafts/reply.mml, then send:
-himalaya -c $CFG template send -a vega-administracion "$(cat drafts/reply.mml)"
+himalaya template send -a vega-administracion "$(cat drafts/reply.mml)"
 
 # Forward
-himalaya -c $CFG template forward -a vega-administracion 27298 > drafts/fwd.mml
+himalaya template forward -a vega-administracion 27298 > drafts/fwd.mml
 # Edit drafts/fwd.mml (fill To:, add text/attachments), then send:
-himalaya -c $CFG template send -a vega-administracion "$(cat drafts/fwd.mml)"
+himalaya template send -a vega-administracion "$(cat drafts/fwd.mml)"
 ```
 
 The generated templates include In-Reply-To/References headers for correct threading.
@@ -163,7 +173,7 @@ The generated templates include In-Reply-To/References headers for correct threa
 When searching across accounts, chain with `&&` in a single command:
 
 ```bash
-himalaya -c $CFG envelope list -a vega-marketing -s 10 from example && himalaya -c $CFG envelope list -a vega-administracion -s 10 from example
+himalaya envelope list -a vega-marketing -s 10 from example && himalaya envelope list -a vega-administracion -s 10 from example
 ```
 
 This still requires one auth per invocation, but runs them back-to-back without needing to send separate commands.
