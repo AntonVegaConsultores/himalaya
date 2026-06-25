@@ -167,6 +167,9 @@ Las plantillas generadas incluyen los headers `In-Reply-To` y `References` para 
 ├── keepass-unlock.sh            # Wrapper de autenticación con prompt visible
 ├── drafts/                      # Borradores de correos (gitignored)
 │   └── *.mml
+├── boilerplates/                # Plantillas MML reutilizables (versionadas)
+│   ├── *.mml                     #   p.ej. factura-kit-digital.mml
+│   └── README.md                 #   uso y marcadores {{...}}
 ├── contactos-colaboradores.vcf  # Directorio de contactos, vCard 3.0 (gitignored)
 ├── .gitignore
 └── README.md

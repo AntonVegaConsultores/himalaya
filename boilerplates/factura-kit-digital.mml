@@ -1,0 +1,30 @@
+From: administracion@vegaconsultores.es
+To: {{EMAIL_BENEFICIARIO}}
+Subject: Factura y pago del IVA - Kit Digital
+
+Hola {{NOMBRE}},
+
+Espero que todo vaya bien. Te escribo en relación con la justificación de tu Kit Digital.
+
+Te adjunto la factura correspondiente a tu solución del Kit Digital. En el Programa Kit Digital el beneficiario únicamente abona el IVA (el resto está subvencionado por Red.es), así que solo habría que pagar el IVA:
+
+- Factura {{NUM_FACTURA}} - {{SOLUCION}} -> IVA: {{IVA}} €
+
+Cuenta para el ingreso (Santander):
+IBAN: ES13 0049 0007 2029 1223 5246
+Referencia de pago: {{NUM_FACTURA}}
+
+La factura va en dos formatos: el PDF para que la veas cómodamente y el archivo .xsig (factura electrónica oficial - Facturae) para tu gestoría.
+
+Cuando te venga bien, puedes realizar el pago del IVA y, a ser posible, enviarnos el justificante de la transferencia. Con eso podremos avanzar con la justificación.
+
+Más adelante, una vez recibido el pago del IVA, te haremos llegar las indicaciones para firmar la justificación en la plataforma de Red.es.
+
+Muchas gracias por tu colaboración.
+
+Un saludo,
+Antón
+Vega Consultores
+
+<#part type=application/pdf filename="{{RUTA_PDF}}"><#/part>
+<#part type=application/xml filename="{{RUTA_XSIG}}"><#/part>

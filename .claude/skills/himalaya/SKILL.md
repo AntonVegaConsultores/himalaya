@@ -118,6 +118,28 @@ himalaya -c "$CFG" template send -a vega-administracion "$(cat drafts/mail-2.mml
 
 Each invocation requires two authentications (IMAP + SMTP).
 
+### Reusable templates: `boilerplates/`
+
+For recurring emails, the **versioned** `boilerplates/` folder holds parameterized
+MML bases (e.g. `factura-kit-digital.mml`, sending a Kit Digital invoice). This is
+different from `drafts/`, which is an ephemeral, **gitignored** scratch area for
+concrete one-off messages.
+
+Don't confuse it with himalaya's `template` command (composing a concrete MML
+message): a boilerplate is the reusable text — you fill it in and then send the
+result with `template send`.
+
+Workflow: copy the boilerplate into `drafts/`, replace the `{{...}}` placeholders
+with real data, then send:
+
+```bash
+cp boilerplates/factura-kit-digital.mml drafts/kd-NOMBRE-NUMFACTURA.mml
+# edit drafts/kd-NOMBRE-NUMFACTURA.mml, fill {{NOMBRE}}, {{NUM_FACTURA}}, etc.
+himalaya -c $CFG template send -a vega-administracion "$(cat drafts/kd-NOMBRE-NUMFACTURA.mml)"
+```
+
+See `boilerplates/README.md` for the available boilerplates and their placeholders.
+
 ### Reply to or forward an email
 
 By default, use the `template` workflow (generate → edit file → send). `message reply/forward` opens `$EDITOR` interactively — useful if the user wants to edit manually, but not the default.
