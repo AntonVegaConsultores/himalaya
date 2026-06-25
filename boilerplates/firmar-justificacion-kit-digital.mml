@@ -1,0 +1,31 @@
+From: administracion@vegaconsultores.es
+To: {{EMAIL_BENEFICIARIO}}
+Subject: Kit Digital - Justificación Fase {{FASE}} lista para firmar
+
+Hola {{NOMBRE}},
+
+Ya tienes disponible para firmar la justificación de la Fase {{FASE}} de tu solución de {{SOLUCION}} del Kit Digital. Solo falta tu firma como beneficiario para dejarla presentada, así que te agradeceríamos que la firmes a la mayor brevedad posible.
+
+Datos de la justificación que tienes que firmar:
+- Código de justificación: {{COD_JUSTIFICACION}}
+- Número de acuerdo: {{NUM_ACUERDO}}
+
+Por favor, sigue estos pasos desde un ordenador con el certificado digital del beneficiario de la ayuda ({{NOMBRE_EMPRESA}}):
+
+1 - Accede a: https://portal.gestion.sedepkd.red.gob.es/portal/espacioPyme
+2 - Pincha en "Tramitación de Acuerdos" y, en el desplegable que se abre, elige la opción "Justificaciones".
+3 - Identifícate digitalmente con el certificado del beneficiario.
+4 - En el listado, localiza la justificación cuyo Código de justificación sea {{COD_JUSTIFICACION}} y ábrela. (Ojo: puede que te aparezca más de una justificación con el mismo Número de acuerdo {{NUM_ACUERDO}}; fíjate en el Código de justificación, que es el que distingue una fase de otra.)
+5 - Acepta las DECLARACIONES RESPONSABLES Y CONFORMIDADES EXPRESAS (del beneficiario).
+6 - Firma digitalmente ("Firmar").
+7 - Por último, selecciona "Enviar".
+
+Importante: tienes que entrar con el certificado del beneficiario de la ayuda ({{NOMBRE_EMPRESA}}). Si entras con un certificado distinto (por ejemplo, uno personal cuando el beneficiario es una empresa), no te aparecerá ningún acuerdo para firmar.
+
+Te rogamos que nos confirmes en cuanto hayas firmado. Si al intentarlo te da algún error o no te aparece el acuerdo, respóndenos a este correo con una captura de lo que veas y lo resolvemos enseguida.
+
+Muchas gracias por tu colaboración.
+
+Un saludo,
+Antón
+Vega Consultores

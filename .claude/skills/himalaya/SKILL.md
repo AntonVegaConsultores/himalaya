@@ -139,16 +139,19 @@ Don't confuse it with himalaya's `template` command (composing a concrete MML
 message): a boilerplate is the reusable text — you fill it in and then send the
 result with `template send`.
 
+Convention:
+- **Pair per boilerplate:** `<name>.mml` (template) + `<name>.md` (notes: purpose,
+  placeholder table, caveats). Notes never inside the `.mml` (would be emailed).
+- Discover with `ls boilerplates/*.mml`, read the homonymous `.md`.
+
 Workflow: copy the boilerplate into `drafts/`, replace the `{{...}}` placeholders
-with real data, then send:
+with real data (documented in `boilerplates/<name>.md`), then send:
 
 ```bash
 cp boilerplates/factura-kit-digital.mml drafts/kd-NOMBRE-NUMFACTURA.mml
 # edit drafts/kd-NOMBRE-NUMFACTURA.mml, fill {{NOMBRE}}, {{NUM_FACTURA}}, etc.
 himalaya template send -a vega-administracion "$(cat drafts/kd-NOMBRE-NUMFACTURA.mml)"
 ```
-
-See `boilerplates/README.md` for the available boilerplates and their placeholders.
 
 ### Reply to or forward an email
 
