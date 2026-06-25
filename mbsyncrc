@@ -40,7 +40,10 @@ Create Both
 Expunge None
 Remove None
 SyncState *
-MaxMessages 1000
+# INBOX de marketing arrastra >1000 no leídos; con el tope en 1000 mbsync
+# salta el buzón entero (no expira no leídos por ExpireUnread=no). Subido para
+# que quepan y siga bajando correo nuevo.
+MaxMessages 2000
 
 # ──────────────────────────── vega-administracion ──────────────────────────
 IMAPAccount vega-administracion
