@@ -1,0 +1,25 @@
+From: Administración Vega Consultores <administracion@vegaconsultores.es>
+To: {{TO}}
+Cc: {{CC}}
+Subject: Kit Digital – Notificaciones pendientes de acción (ZIP adjunto)
+
+{{SALUDO}}
+
+{{FRASE_ADJUNTO}}
+
+¿Qué contiene el ZIP?
+- notificaciones.csv — listado completo de todas las notificaciones accionables con sus fechas límite, estado y datos del acuerdo.
+- Los documentos de cada notificación (PDF o ZIP), renombrados con el formato fecha_tipo_acuerdo_beneficiario para facilitar su localización.
+
+{{NOVEDADES}}
+
+El resto de notificaciones del ZIP siguen sin cambios respecto al último envío.
+
+Nota sobre el estado "Expirada (aceptada por silencio)" que {{VERAS_VEREIS}} en el CSV: indica únicamente que la notificación en sede electrónica se abrió/aceptó automáticamente. No significa que la acción haya caducado — el plazo para actuar sigue vigente según la fecha límite indicada en cada caso.
+
+{{CIERRE}}
+
+Un saludo,
+{{FIRMA}}
+
+<#part type=application/zip filename="{{RUTA_ZIP}}"><#/part>
